@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/RBAC?serverTimezone=GMT%2B8
+    username: root
+    password: admin123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  freemarker:
+    cache: false # 缓存配置 开发阶段应该配置为false 因为经常会改
+    suffix: .html # 模版后缀名 默认为ftl
+    charset: UTF-8 # 文件编码
+    template-loader-path: classpath:/templates/
+  security:
+    loginType: JSON #自定义的配置数据格式 JSON时返回JSON到浏览器
+  session:
+    timeout: 30m #session超时时间需要重新登录
+#    user:
+#      name: admin #security
+#      password: admin #security
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
