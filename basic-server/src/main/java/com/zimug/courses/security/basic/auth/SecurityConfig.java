@@ -1,12 +1,12 @@
-package com.zimug.courses.security.basic.config;
+package com.zimug.courses.security.basic.auth;
 
 
-import com.zimug.courses.security.basic.config.filter.DeniedFilter;
-import com.zimug.courses.security.basic.config.filter.LoginSuccessFilter;
-import com.zimug.courses.security.basic.config.filter.LogoutFilter;
-import com.zimug.courses.security.basic.config.service.MyAuthenticationFailureHandler;
-import com.zimug.courses.security.basic.config.service.SessionExpiredServiceImpl;
-import com.zimug.courses.security.basic.config.service.UserDetailsServiceImpl;
+import com.zimug.courses.security.basic.auth.config.UserDetailsServiceImpl;
+import com.zimug.courses.security.basic.auth.handler.MyAccessDeniedHandler;
+import com.zimug.courses.security.basic.auth.handler.MyAuthenticationSuccessHandler;
+import com.zimug.courses.security.basic.auth.handler.MyLogoutSuccessHandler;
+import com.zimug.courses.security.basic.auth.config.SessionExpiredServiceImpl;
+import com.zimug.courses.security.basic.auth.handler.MyAuthenticationFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,13 +35,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private MyAuthenticationFailureHandler loginFailureFilter;
     @Resource
-    private LoginSuccessFilter loginSuccessFilter;
+    private MyAuthenticationSuccessHandler loginSuccessFilter;
     @Resource
-    private LogoutFilter logoutFilter;
+    private MyLogoutSuccessHandler logoutFilter;
     @Autowired
     private UserDetailsServiceImpl myUserDetailsService;
     @Autowired
-    private DeniedFilter deniedFilter;
+    private MyAccessDeniedHandler myAccessDeniedHandler;
     @Autowired
     private SessionExpiredServiceImpl sessionExpiredServiceImpl;
 
@@ -77,7 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.defaultSuccessUrl("/")//登录成功跳转 index.html（"/"默认等于resource/templates/index.html）
                 //.failureUrl("/login.html")//登录失败
 
-                //方式2..使用 自定义的 LoginFailureFilter, LoginSuccessFilter 处理登录成功失败
+                //方式2..使用 自定义的  处理登录成功失败
                 .successHandler(loginSuccessFilter).failureHandler(loginFailureFilter);
 
 
@@ -133,7 +133,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(logoutFilter);//退出自定义逻辑
 
         //没有权限访问
-        http.exceptionHandling().accessDeniedHandler(deniedFilter);
+        http.exceptionHandling().accessDeniedHandler(myAccessDeniedHandler);
 
         //关闭跨站攻击防御并且
         http.csrf().disable();

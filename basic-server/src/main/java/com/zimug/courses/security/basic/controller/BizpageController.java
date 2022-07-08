@@ -1,6 +1,6 @@
 package com.zimug.courses.security.basic.controller;
 
-import com.zimug.courses.security.basic.config.service.MethodELTestService;
+import com.zimug.courses.security.basic.auth.config.MethodELTestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

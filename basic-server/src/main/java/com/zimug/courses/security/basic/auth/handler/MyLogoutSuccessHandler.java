@@ -1,4 +1,4 @@
-package com.zimug.courses.security.basic.config.filter;
+package com.zimug.courses.security.basic.auth.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -16,7 +16,7 @@ import java.io.IOException;
 
 @Component
 @Slf4j
-public class LogoutFilter implements LogoutSuccessHandler {
+public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException,
             ServletException {

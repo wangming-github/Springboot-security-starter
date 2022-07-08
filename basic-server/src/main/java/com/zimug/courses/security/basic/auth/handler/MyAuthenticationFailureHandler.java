@@ -1,10 +1,11 @@
-package com.zimug.courses.security.basic.config.service;
+package com.zimug.courses.security.basic.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zimug.commons.content.ResponseType;
 import com.zimug.commons.exception.AjaxResponse;
 import com.zimug.commons.exception.CustomException;
 import com.zimug.commons.exception.CustomExceptionType;
+import com.zimug.courses.security.basic.auth.config.UserDetailsServiceImpl;
 import com.zimug.courses.security.basic.mapper.MyUserDetailsServiceMapper;
 import com.zimug.courses.security.basic.model.SecurityUser;
 import es.moki.ratelimitj.core.limiter.request.RequestLimitRule;

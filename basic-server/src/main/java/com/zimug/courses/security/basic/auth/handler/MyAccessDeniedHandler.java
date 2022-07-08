@@ -1,4 +1,4 @@
-package com.zimug.courses.security.basic.config.filter;
+package com.zimug.courses.security.basic.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zimug.commons.content.ResponseType;
@@ -25,7 +25,7 @@ import java.io.IOException;
  */
 @Component
 @Slf4j
-public class DeniedFilter implements AccessDeniedHandler {
+public class MyAccessDeniedHandler implements AccessDeniedHandler {
 
 
     @Value("${spring.security.loginType}")

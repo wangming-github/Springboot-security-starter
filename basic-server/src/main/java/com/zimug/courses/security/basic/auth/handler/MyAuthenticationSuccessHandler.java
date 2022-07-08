@@ -1,4 +1,4 @@
-package com.zimug.courses.security.basic.config.filter;
+package com.zimug.courses.security.basic.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zimug.commons.content.ResponseType;
@@ -23,7 +23,7 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-public class LoginSuccessFilter extends SavedRequestAwareAuthenticationSuccessHandler {
+public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     @Value("${spring.security.loginType}")
     private String loginType;
