@@ -3,6 +3,8 @@ package com.zimug.courses.security.basic.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +23,8 @@ import java.util.List;
  * @author maizi
  */
 @Setter
+@Slf4j
+@ToString
 public class SecurityUser implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -66,7 +70,8 @@ public class SecurityUser implements UserDetails, Serializable {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        log.info("账户是否没被锁定:{}", this.accountNonLocked);
+        return this.accountNonLocked;
     }
 
     @Override

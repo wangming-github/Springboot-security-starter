@@ -5,6 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
+/**
+ * @author maizi
+ */
 @SpringBootApplication(scanBasePackages = {"com.zimug"})
 @MapperScan(basePackages = {"com.zimug"})
 public class BasicServerApplication {

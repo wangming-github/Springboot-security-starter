@@ -6,6 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+/**
+ * @author maizi
+ */
 @Controller
 public class BizpageController {
 
@@ -48,6 +51,11 @@ public class BizpageController {
     @GetMapping("/biz2")
     public String deleteOrder() {
         return "biz2";
+    }
+
+    @GetMapping("/index_alt")
+    public String indexAlt() {
+        return "index_alt";
     }
 
 

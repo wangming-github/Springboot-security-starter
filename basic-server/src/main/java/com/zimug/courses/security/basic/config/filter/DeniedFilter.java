@@ -1,8 +1,13 @@
 package com.zimug.courses.security.basic.config.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zimug.commons.content.ResponseType;
+import com.zimug.commons.exception.AjaxResponse;
+import com.zimug.commons.exception.CustomException;
+import com.zimug.commons.exception.CustomExceptionType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -11,8 +16,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -24,6 +27,10 @@ import java.util.Map;
 @Slf4j
 public class DeniedFilter implements AccessDeniedHandler {
 
+
+    @Value("${spring.security.loginType}")
+    private String loginType;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -31,15 +38,7 @@ public class DeniedFilter implements AccessDeniedHandler {
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
 
         log.info("=========执行无权访问逻辑================");
-
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("code", HttpServletResponse.SC_FORBIDDEN);
-        map.put("msg", "无权访问...");
-        String s = objectMapper.writeValueAsString(map);
-
-        //获取Response将数据返回
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(s);
+        response.setContentType(ResponseType.JSON);
+        response.getWriter().write(objectMapper.writeValueAsString(AjaxResponse.error(new CustomException(CustomExceptionType.SC_FORBIDDEN))));
     }
 }

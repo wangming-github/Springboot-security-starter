@@ -42,6 +42,11 @@ public class User implements Serializable {
     private Integer enabled;
 
     /**
+     * 账号锁定状态（1正常 0多次失败登录被锁定）
+     */
+    private Integer accountNonLocked;
+
+    /**
      * 邮箱
      */
     private String email;

@@ -1,10 +1,10 @@
 package com.zimug.courses.security.basic.config;
 
 
-import com.zimug.courses.security.basic.config.filter.LoginFailureFilter;
+import com.zimug.courses.security.basic.config.filter.DeniedFilter;
 import com.zimug.courses.security.basic.config.filter.LoginSuccessFilter;
 import com.zimug.courses.security.basic.config.filter.LogoutFilter;
-import com.zimug.courses.security.basic.config.filter.DeniedFilter;
+import com.zimug.courses.security.basic.config.service.MyAuthenticationFailureHandler;
 import com.zimug.courses.security.basic.config.service.SessionExpiredServiceImpl;
 import com.zimug.courses.security.basic.config.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Resource
-    private LoginFailureFilter loginFailureFilter;
+    private MyAuthenticationFailureHandler loginFailureFilter;
     @Resource
     private LoginSuccessFilter loginSuccessFilter;
     @Resource
@@ -42,6 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl myUserDetailsService;
     @Autowired
     private DeniedFilter deniedFilter;
+    @Autowired
+    private SessionExpiredServiceImpl sessionExpiredServiceImpl;
 
 
     /**
@@ -81,7 +83,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //2.资源访问控制-决定什么用户、什么角色可以访问什么资源（动态-数据库）
         http.authorizeRequests()//authorizeRequests里按照谁先匹配，就匹配谁的逻辑执行不是无序的
-                .antMatchers("/login", "/login.html").permitAll()//登录无需认证
+                .antMatchers("/login", "/login.html", "/error").permitAll()//登录无需认证
 
                 //方式1 使用静态配置
                 //角色是一种特殊的权限 hasAnyAuthority ("ROLE_user","ROLE_admin") <==等价于==> hasAnyRole（"user"，"admin"）
@@ -102,17 +104,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //never：Spring Security将永远不会主动创建session，但是如果session在当前应用中已经存在，它将使用该session
                 //stateless：Spring Security不会创建或使用任何session。适合于接口型的无状态应用（前后端分离），该方式节省内存资源。
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)//默认
-                .invalidSessionUrl("/sessionExpired.html")//回话超时，需要重新登录
+                .invalidSessionUrl("/login.html")//回话超时，需要重新登录
+                //.invalidSessionStrategy(new SessionInvalidServiceImpl())
 
                 //migrationSession保护方式（默认）每次登录验证将创建一个新的HTTP sessionSESSION ID变了。
                 //设置为“none”时，原始会话不会无效。
                 //设置“newSession”后，将创建一个干净的会话，而不会复制旧会话中的任何属性。
-                .sessionFixation().newSession()//默认的
+                .sessionFixation().migrateSession()
 
                 //一个账号多端登录被迫踢下线
                 .maximumSessions(1) //限制最大登录用户数量
                 .maxSessionsPreventsLogin(false) //true表示已经登录就不予许再次登录，false表示允许再次登录但是之前的登录账户会被踢下线
-                .expiredSessionStrategy(new SessionExpiredServiceImpl()); //session超时，踢下线处理类
+                .expiredSessionStrategy(sessionExpiredServiceImpl); //session超时，踢下线处理类
 
 
         http.rememberMe() //记住我
@@ -163,6 +166,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     /**
+     * configure(WebSecurity web)不走过滤链的放行
+     * 即不通过security 完全对外的/最大级别的放行
      * 将顶目中静态资源路径开放出来
      * <p>
      * 为啥不在上面配置？
@@ -170,7 +175,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**", "/fonts/**", "/img/**", "/js/**");
+        web.ignoring().antMatchers("/css/**", "/fonts/**", "/images/**", "/js/**");
     }
 
 

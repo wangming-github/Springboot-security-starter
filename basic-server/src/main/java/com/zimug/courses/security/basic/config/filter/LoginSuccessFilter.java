@@ -1,6 +1,7 @@
 package com.zimug.courses.security.basic.config.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zimug.commons.content.ResponseType;
 import com.zimug.commons.exception.AjaxResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class LoginSuccessFilter extends SavedRequestAwareAuthenticationSuccessHa
         if ("JSON".equalsIgnoreCase(loginType)) {//如果配置了JSON格式，返回如下信息
 
             log.info("> 配置了JSON返回....");
-            response.setContentType("application/json;charset=UTF-8");//指定响应类型JSON
+            response.setContentType(ResponseType.JSON);//指定响应类型JSON
             //response.getWriter().write(objectMapper.writeValueAsString(authentication));
             response.getWriter().write(objectMapper.writeValueAsString(AjaxResponse.success()));
         } else {//否则执行父类默认的方式，跳转上一次请求地址

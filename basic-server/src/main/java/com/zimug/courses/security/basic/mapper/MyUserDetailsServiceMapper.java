@@ -3,6 +3,7 @@ package com.zimug.courses.security.basic.mapper;
 import com.zimug.courses.security.basic.model.SecurityUser;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface MyUserDetailsServiceMapper {
      * @param username 用户
      * @return 角色list
      */
-    @Select({"select  user_name ,password,enabled " + //br
+    @Select({"select  user_name ,password ,enabled, account_non_locked " + //br
             "from sys_user u " + //br
             "where u.user_name = #{username} ;"})
     SecurityUser findUserByUsername(@Param("username") String username);
@@ -57,6 +58,18 @@ public interface MyUserDetailsServiceMapper {
             "</foreach> ", //br
             "</script>"})
     List<String> findAuthorityByUsername(@Param("roleCodes") List<String> roleCodes);
+
+
+    @Update({" UPDATE sys_user u" + //br
+            "  SET u.enabled = #{enabled} " + //br
+            " WHERE u.user_name = #{username}"})
+    int updateEnabledByUsername(SecurityUser myUserDetails);
+
+
+    @Update({" UPDATE sys_user u" + //br
+            "  SET u.account_non_locked = #{accountNonLocked} " + //br
+            " WHERE u.user_name = #{username}"})
+    int updateAccountNonLockedByUsername(SecurityUser myUserDetails);
 
 
 }
