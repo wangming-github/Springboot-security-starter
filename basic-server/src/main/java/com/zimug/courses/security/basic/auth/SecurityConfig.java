@@ -7,6 +7,7 @@ import com.zimug.courses.security.basic.auth.handler.MyAuthenticationSuccessHand
 import com.zimug.courses.security.basic.auth.handler.MyLogoutSuccessHandler;
 import com.zimug.courses.security.basic.auth.config.SessionExpiredServiceImpl;
 import com.zimug.courses.security.basic.auth.handler.MyAuthenticationFailureHandler;
+import com.zimug.courses.security.basic.auth.imagecode.CaptchaCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -44,6 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private MyAccessDeniedHandler myAccessDeniedHandler;
     @Autowired
     private SessionExpiredServiceImpl sessionExpiredServiceImpl;
+    @Autowired
+    private CaptchaCodeFilter myCaptchaCodeFilter;
 
 
     /**
@@ -66,6 +70,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        //验证码过滤器
+        http.addFilterBefore(myCaptchaCodeFilter, UsernamePasswordAuthenticationFilter.class);
+
         //1.登录认证逻辑-登录UL、如何接收登录参数、登陆成功后逻辑（静态）
         http.formLogin()//设置认证模式:formLogin
                 .loginPage("/login.html")//未登录时返回页面
@@ -83,7 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //2.资源访问控制-决定什么用户、什么角色可以访问什么资源（动态-数据库）
         http.authorizeRequests()//authorizeRequests里按照谁先匹配，就匹配谁的逻辑执行不是无序的
-                .antMatchers("/login", "/login.html", "/error").permitAll()//登录无需认证
+                .antMatchers("/login", "/login.html", "/error", "/kaptcha").permitAll()//登录无需认证
 
                 //方式1 使用静态配置
                 //角色是一种特殊的权限 hasAnyAuthority ("ROLE_user","ROLE_admin") <==等价于==> hasAnyRole（"user"，"admin"）
