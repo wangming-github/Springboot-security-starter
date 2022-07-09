@@ -82,6 +82,13 @@
             </exclusions>
         </dependency>
 
+        <!-- 验证码生成工具 -->
+        <dependency>
+            <groupId>com.github.whvcse</groupId>
+            <artifactId>easy-captcha</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+
 
         <dependency>
             <groupId>io.springfox</groupId>
@@ -98,7 +105,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.11</version>
+            <version>3.12.0</version>
         </dependency>
     </dependencies>
 

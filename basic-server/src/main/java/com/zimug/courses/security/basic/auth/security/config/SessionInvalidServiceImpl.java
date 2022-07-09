@@ -1,4 +1,4 @@
-package com.zimug.courses.security.basic.auth.config;
+package com.zimug.courses.security.basic.auth.security.config;
 
 
 import com.zimug.commons.content.ResponseType;

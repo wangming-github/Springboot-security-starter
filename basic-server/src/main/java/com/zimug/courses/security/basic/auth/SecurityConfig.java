@@ -1,13 +1,15 @@
 package com.zimug.courses.security.basic.auth;
 
 
-import com.zimug.courses.security.basic.auth.config.UserDetailsServiceImpl;
-import com.zimug.courses.security.basic.auth.handler.MyAccessDeniedHandler;
-import com.zimug.courses.security.basic.auth.handler.MyAuthenticationSuccessHandler;
-import com.zimug.courses.security.basic.auth.handler.MyLogoutSuccessHandler;
-import com.zimug.courses.security.basic.auth.config.SessionExpiredServiceImpl;
-import com.zimug.courses.security.basic.auth.handler.MyAuthenticationFailureHandler;
+import com.zimug.courses.security.basic.auth.security.config.MyUserDetailsService;
+import com.zimug.courses.security.basic.auth.security.handler.MyAccessDeniedHandler;
+import com.zimug.courses.security.basic.auth.security.handler.MyAuthenticationSuccessHandler;
+import com.zimug.courses.security.basic.auth.security.handler.MyLogoutSuccessHandler;
+import com.zimug.courses.security.basic.auth.security.config.SessionExpiredServiceImpl;
+import com.zimug.courses.security.basic.auth.security.handler.MyAuthenticationFailureHandler;
 import com.zimug.courses.security.basic.auth.imagecode.CaptchaCodeFilter;
+import com.zimug.courses.security.basic.auth.smscode.SmsCodeSecurityConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +31,7 @@ import javax.sql.DataSource;
 /**
  * @author maizi
  */
+@Slf4j
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)//使用注解的方式进行鉴权开关
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -41,14 +44,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private MyLogoutSuccessHandler logoutFilter;
     @Autowired
-    private UserDetailsServiceImpl myUserDetailsService;
+    private MyUserDetailsService myUserDetailsService;
     @Autowired
     private MyAccessDeniedHandler myAccessDeniedHandler;
     @Autowired
     private SessionExpiredServiceImpl sessionExpiredServiceImpl;
     @Autowired
     private CaptchaCodeFilter myCaptchaCodeFilter;
-
+    @Autowired
+    private SmsCodeSecurityConfig smsCodeSecurityConfig;
 
     /**
      * 方式1. httpBasic认证模式
@@ -68,8 +72,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @see org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
      */
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
 
+    protected void configure(HttpSecurity http) throws Exception {
+        log.info("==========> 进行核心配置configure................................");
         //验证码过滤器
         http.addFilterBefore(myCaptchaCodeFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -85,12 +90,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.failureUrl("/login.html")//登录失败
 
                 //方式2..使用 自定义的  处理登录成功失败
-                .successHandler(loginSuccessFilter).failureHandler(loginFailureFilter);
+                .successHandler(loginSuccessFilter).failureHandler(loginFailureFilter)
+                //短信登录校验
+                .and().apply(smsCodeSecurityConfig);
 
 
         //2.资源访问控制-决定什么用户、什么角色可以访问什么资源（动态-数据库）
         http.authorizeRequests()//authorizeRequests里按照谁先匹配，就匹配谁的逻辑执行不是无序的
-                .antMatchers("/login", "/login.html", "/error", "/kaptcha").permitAll()//登录无需认证
+                .antMatchers("/login", "/login.html", "/error", "/kaptcha", "/smscode", "/smslogin", "/null", "/favicon.ico").permitAll()//登录无需认证
 
                 //方式1 使用静态配置
                 //角色是一种特殊的权限 hasAnyAuthority ("ROLE_user","ROLE_admin") <==等价于==> hasAnyRole（"user"，"admin"）

@@ -1,4 +1,4 @@
-package com.zimug.courses.security.basic.config;
+package com.zimug.courses.security.basic.auth.imagecode;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package com.zimug.courses.security.basic.auth.handler;
+package com.zimug.courses.security.basic.auth.security.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;

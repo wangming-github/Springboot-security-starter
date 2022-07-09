@@ -18,13 +18,13 @@ public interface MyUserDetailsServiceMapper {
     /**
      * 根据用户名查询用户
      *
-     * @param username 用户
+     * @param userId 用户登录信息 并非id
      * @return 角色list
      */
     @Select({"select  user_name ,password ,enabled, account_non_locked " + //br
             "from sys_user u " + //br
-            "where u.user_name = #{username} ;"})
-    SecurityUser findUserByUsername(@Param("username") String username);
+            "where u.user_name = #{userId} OR u.phone_number = #{userId} ;"})
+    SecurityUser findUserByUsername(@Param("userId") String userId);
 
 
     /**
@@ -37,8 +37,8 @@ public interface MyUserDetailsServiceMapper {
             "from sys_role " + //br
             "left join sys_user_role sur on sys_role.id=sur.role_id " + //br
             "left join sys_user su on su.id = sur.user_id " + //br
-            "where user_name = #{username} ;"})
-    List<String> findRoleCodeByUsername(@Param("username") String username);
+            "where user_name = #{userId} OR phone_number = #{userId} ;"})
+    List<String> findRoleCodeByUsername(@Param("userId") String userId);
 
 
     /**

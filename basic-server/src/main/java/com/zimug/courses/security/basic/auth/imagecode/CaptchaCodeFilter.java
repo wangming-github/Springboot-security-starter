@@ -1,8 +1,7 @@
 package com.zimug.courses.security.basic.auth.imagecode;
 
 import com.zimug.commons.content.ResponseType;
-import com.zimug.courses.security.basic.auth.handler.MyAuthenticationFailureHandler;
-import com.zimug.courses.security.basic.config.CaptchaCode;
+import com.zimug.courses.security.basic.auth.security.handler.MyAuthenticationFailureHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;

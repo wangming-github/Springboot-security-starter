@@ -1,4 +1,4 @@
-package com.zimug.courses.security.basic.auth.config;
+package com.zimug.courses.security.basic.auth.security.config;
 
 import com.zimug.courses.security.basic.mapper.MyUserDetailsServiceMapper;
 import com.zimug.courses.security.basic.model.SecurityUser;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Component
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class MyUserDetailsService implements UserDetailsService {
 
 
     @Resource
@@ -33,6 +33,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+
+        log.info("==========> UserDetailsService 查询用户信息权限信息 返回securityUser");
         SecurityUser securityUser = mapper.findUserByUsername(username);
         if (securityUser == null) {
             throw new UsernameNotFoundException("用户不存在");

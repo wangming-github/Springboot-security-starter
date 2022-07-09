@@ -1,4 +1,4 @@
-package com.zimug.courses.security.basic.auth.config;
+package com.zimug.courses.security.basic.auth.security.config;
 
 import com.zimug.courses.security.basic.model.SecurityUser;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ public class UrlPermissionCheckService {
             //本次要访问的资源
             SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(requestUri);//封装成SimpleGrantedAuthority
             SecurityUser user = (SecurityUser) principal;
-            log.info("===URL：{}", requestUri);
+            log.info("==========> URL:[{}]", requestUri);
             //当前用户所有资源getAuthorities
             return user.getAuthorities().contains(simpleGrantedAuthority);//判断登录用户权限中是否包含登录请求
         }
