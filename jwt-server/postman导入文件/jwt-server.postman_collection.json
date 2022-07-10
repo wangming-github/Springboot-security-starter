@@ -1,0 +1,193 @@
+{
+	"info": {
+		"_postman_id": "9956c86d-28d5-443b-bf50-fba0eba71304",
+		"name": "SpringSecurity-Quick-Start",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "676442"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//把json字符串转化为对象",
+							"var data=JSON.parse(responseBody);",
+							"//获取data对象的token。",
+							"var token=data.data;",
+							"//设置成集合变量",
+							"pm.collectionVariables.set(\"JWTtoken\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/authentication"
+			},
+			"response": []
+		},
+		{
+			"name": "模拟携带token请求",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// 从当前集合范围获取 JWTtoken",
+							"const token = pm.collectionVariables.get(\"JWTtoken\")",
+							"console.log(\"JWTtoken:\"+token);",
+							"pm.request.headers.remove(token)",
+							"pm.request.headers.add({",
+							"  key: 'JWTHeaderName',",
+							"  value: token",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "JWTHeaderName",
+						"value": "{{adminex-token}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": "localhost:8081/hello"
+			},
+			"response": []
+		},
+		{
+			"name": "模拟跨域请求",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// 从当前集合范围获取 JWTtoken",
+							"const token = pm.collectionVariables.get(\"JWTtoken\")",
+							"console.log(\"JWTtoken:\"+token);",
+							"pm.request.headers.remove(token)",
+							"pm.request.headers.add({",
+							"  key: 'JWTHeaderName',",
+							"  value: token",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Origin",
+						"value": "http://localhost:8888",
+						"type": "text",
+						"description": "允许域：http://localhost:8888"
+					}
+				],
+				"url": "localhost:8081/hello"
+			},
+			"response": []
+		},
+		{
+			"name": "模拟携带CSRF请求",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// 将XSRF-TOKEN写入集合变量",
+							"const csrf_token = pm.cookies.get('XSRF-TOKEN')",
+							"console.info(\"获取csrf_token：\"+csrf_token)",
+							"pm.collectionVariables.set('csrf_token', csrf_token)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// 从当前集合范围获取 JWTtoken",
+							"const token = pm.collectionVariables.get(\"JWTtoken\")",
+							"pm.request.headers.remove(token)",
+							"pm.request.headers.add({",
+							"  key: 'JWTHeaderName',",
+							"  value: token",
+							"})",
+							"",
+							"",
+							"// 请求失败原因：",
+							"// 1.清空下collectionVariables的其他设置",
+							"// 2.查看configure(HttpSecurity)是否开启csrf",
+							"// 从当前集合范围获取 csrf_token",
+							"const csrf_token = pm.collectionVariables.get('csrf_token')",
+							"console.info(\"请求csrf_token:\"+csrf_token);",
+							"pm.request.headers.remove('X-XSRF-TOKEN')",
+							"pm.request.headers.add({",
+							"  key: 'X-XSRF-TOKEN',",
+							"  value:  csrf_token",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "localhost:8081/hello"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "JWTtoken",
+			"value": ""
+		},
+		{
+			"key": "csrf_token",
+			"value": ""
+		}
+	]
+}
