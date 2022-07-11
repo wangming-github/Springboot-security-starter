@@ -1,0 +1,35 @@
+2022-07-11 21:28:33.895 +0800	INFO	org.springframework.boot.StartupInfoLogger	55	restartedMain	Starting JwtServerApplication on MaizideMacBook-Pro.local with PID 77416 (started by maizi in /Users/maizi/1.git-project/1.github/日常学习项目/Blibili-字母哥课堂/boot-security-starter-master)
+2022-07-11 21:28:33.909 +0800	INFO	org.springframework.boot.SpringApplication	655	restartedMain	The following profiles are active: prod
+2022-07-11 21:28:33.969 +0800	INFO	org.springframework.boot.logging.DeferredLog	225	restartedMain	Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-07-11 21:28:33.970 +0800	INFO	org.springframework.boot.logging.DeferredLog	225	restartedMain	For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-07-11 21:28:35.411 +0800	INFO	org.springframework.boot.web.embedded.tomcat.TomcatWebServer	92	restartedMain	Tomcat initialized with port(s): 8082 (http)
+2022-07-11 21:28:35.509 +0800	INFO	org.apache.juli.logging.DirectJDKLog	173	restartedMain	Initializing ProtocolHandler ["http-nio-8082"]
+2022-07-11 21:28:35.510 +0800	INFO	org.apache.juli.logging.DirectJDKLog	173	restartedMain	Starting service [Tomcat]
+2022-07-11 21:28:35.511 +0800	INFO	org.apache.juli.logging.DirectJDKLog	173	restartedMain	Starting Servlet engine: [Apache Tomcat/9.0.30]
+2022-07-11 21:28:35.578 +0800	INFO	org.apache.juli.logging.DirectJDKLog	173	restartedMain	Initializing Spring embedded WebApplicationContext
+2022-07-11 21:28:35.579 +0800	INFO	org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext	284	restartedMain	Root WebApplicationContext: initialization completed in 1609 ms
+2022-07-11 21:28:35.643 +0800	ERROR	org.springframework.boot.web.embedded.tomcat.TomcatStarter	61	restartedMain	Error starting Tomcat context. Exception: org.springframework.beans.factory.BeanCreationException. Message: Error creating bean with name 'jwtAuthenticationTokenFilter': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'myUserDetailsService': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'myUserDetailsServiceMapper' defined in file [/Users/maizi/1.git-project/1.github/日常学习项目/Blibili-字母哥课堂/boot-security-starter-master/jwt-server/target/classes/com/example/jwtserver/config/auth/MyUserDetailsServiceMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Unsatisfied dependency expressed through method 'sqlSessionFactory' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception; nested exception is org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Failed to determine a suitable driver class
+2022-07-11 21:28:35.664 +0800	INFO	org.apache.juli.logging.DirectJDKLog	173	restartedMain	Stopping service [Tomcat]
+2022-07-11 21:28:35.673 +0800	WARN	org.springframework.context.support.AbstractApplicationContext	558	restartedMain	Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server; nested exception is org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+2022-07-11 21:28:35.683 +0800	INFO	org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener	136	restartedMain	
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-07-11 21:28:35.690 +0800	ERROR	org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter	40	restartedMain	
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+
+Reason: Failed to determine a suitable driver class
+
+
+Action:
+
+Consider the following:
+	If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.
+	If you have database settings to be loaded from a particular profile you may need to activate it (the profiles prod are currently active).
+

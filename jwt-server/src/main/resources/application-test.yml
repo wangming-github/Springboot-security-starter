@@ -1,12 +1,33 @@
 server:
-  port: 8890
-
+  port: 8083
 
 spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+  datasource:
+    url: jdbc:mysql://localhost:3306/RBAC?serverTimezone=GMT%2B8
+    username: root
+    password: admin123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    loginType: JSON
+  session:
+    timeout: 30m #session超时时间需要重新登录
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 
 logging:
-  config: classpath:log4j2-prod.xml
+  config: classpath:log4j2-dev.xml
+
+mybatis:
+  configuration:
+    mapUnderscoreToCamelCase: true
+
+jwt:
+  secret: ffjaksdfjaklf
+  expiration: 3600000
+  header: JWTHeaderName
