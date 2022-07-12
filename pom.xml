@@ -11,6 +11,7 @@
         <module>basic-server</module>
         <module>commons-spring-boot-starter</module>
         <module>oauth2-server</module>
+        <module>AS-RS</module>
     </modules>
     <packaging>pom</packaging>
 

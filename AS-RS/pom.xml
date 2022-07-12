@@ -9,12 +9,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>oauth2-server</artifactId>
+    <artifactId>AS-RS</artifactId>
+    <modules>
+        <module>Oauth2-Autherization-Server</module>
+        <module>Oauth2-Resource-Server</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
+    <packaging>pom</packaging>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -55,6 +61,21 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+
+        <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-pool2</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-jwt</artifactId>
+			<version>1.0.11.RELEASE</version>
+		</dependency>
     </dependencies>
 
 </project>
