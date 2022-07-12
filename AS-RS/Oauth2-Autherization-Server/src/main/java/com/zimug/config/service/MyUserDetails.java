@@ -1,4 +1,4 @@
-package com.zimug.config;
+package com.zimug.config.service;
 
 import lombok.Setter;
 import lombok.ToString;

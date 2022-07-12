@@ -1,4 +1,4 @@
-package com.zimug.config;
+package com.zimug.config.service;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;

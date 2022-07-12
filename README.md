@@ -1,19 +1,21 @@
 # boot-security-starter
 
-#### 介绍
-Spring Security 学习
-
-
 #### 项目结构
-##### basic-server ----前后端合并项目启动项目即访问网页实现权限控制
-##### jwt-server ------接口服务项目 只提供JSON数据 推荐POSTMAN测试
-* [POSTMAN接口文档 ](https://github.com/wangming-github/Springboot-security-starter/tree/main/jwt-server/postman%E5%AF%BC%E5%85%A5%E6%96%87%E4%BB%B6)
-* [MYSQL](https://github.com/wangming-github/Springboot-security-starter/tree/main/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6)
 
+##### basic-server ---- 第一章. 第二章. 第三章.
 
-#### 参与贡献
+##### jwt-server ------ 第四章.
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+##### oauth2-server --- 5.6.编码实现资源服务器
+
+##### AS-RS ----------- 5.7.认证资源服务器分离
+
+##### commons-spring-boot-starter -- 工具模块
+
+##### 数据库文件 -------- 本次示例所用MYSQL文件
+
+---
+
+lsof -i :8001
+lsof -i :8002
+kill PID数字
