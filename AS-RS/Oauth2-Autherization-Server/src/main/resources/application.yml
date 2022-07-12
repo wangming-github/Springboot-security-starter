@@ -8,14 +8,13 @@ spring:
     password: admin123
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
-    database: 0 # Redis ���ݿ�������Ĭ��Ϊ 0��
-    host: 192.168.161.3 # Redis ��������ַ
-    port: 6379 # Redis ���������Ӷ˿�
-    password:  # Redis �������������루Ĭ��Ϊ�գ�
+    database: 0 # Redis 数据库索引（默认为 0）
+    host: 127.0.0.1 # Redis 服务器地址
+    port: 6379 # Redis 服务器连接端口
+    password: # Redis 服务器连接密码（默认为空）
     lettuce:
       pool:
-        max-active: 8 # ���ӳ�������������ʹ�ø�ֵ��ʾû�����ƣ� Ĭ�� 8
-        max-wait: -1 # ���ӳ����������ȴ�ʱ�䣨ʹ�ø�ֵ��ʾû�����ƣ� Ĭ�� -1
-        max-idle: 8 # ���ӳ��е������������� Ĭ�� 8
-        min-idle: 0 # ���ӳ��е���С�������� Ĭ�� 0
-
+        max-active: 8 # 连接池最大连接数（使用负值表示没有限制） 默认 8
+        max-wait: -1 # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1
+        max-idle: 8 # 连接池中的最大空闲连接 默认 8
+        min-idle: 0 # 连接池中的最小空闲连接 默认 0
