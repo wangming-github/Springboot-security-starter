@@ -1,6 +1,6 @@
-insert into RBAC.sys_user (user_name, password)
-values ('admin', '$2a$10$r0uye0WgzvfbkwZx4vQiZOrlq6JKM8wcl.RlYIuqRSAE8FF5/dfBa'),# 密码 1234
-       ('user', '$2a$10$r0uye0WgzvfbkwZx4vQiZOrlq6JKM8wcl.RlYIuqRSAE8FF5/dfBa');
+insert into RBAC.sys_user (user_name, password,phone_number)
+values ('admin', '$2a$10$r0uye0WgzvfbkwZx4vQiZOrlq6JKM8wcl.RlYIuqRSAE8FF5/dfBa','18072881204'),# 密码 1234
+       ('user', '$2a$10$r0uye0WgzvfbkwZx4vQiZOrlq6JKM8wcl.RlYIuqRSAE8FF5/dfBa','18352538896');
 
 
 insert into RBAC.sys_role (role_name, role_code, role_desc)
