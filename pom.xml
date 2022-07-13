@@ -12,6 +12,7 @@
         <module>commons-spring-boot-starter</module>
         <module>oauth2-server</module>
         <module>AS-RS</module>
+        <module>oauth2-github-login</module>
     </modules>
     <packaging>pom</packaging>
 

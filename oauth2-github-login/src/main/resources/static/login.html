@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="/images/favcion.png" type="image/png">
+
+
+    <title>Login</title>
+
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet">
+    <!--gritter css-->
+    <link rel="stylesheet" type="text/css" href="js/gritter/css/jquery.gritter.css"/>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+
+</head>
+
+<body class="login-body">
+
+<div class="container">
+
+    <!-- loginForm-->
+    <form class="form-signin" action="/login" method="post" id="loginForm">
+        <div class="form-signin-heading text-center">
+            <h1 class="sign-title">Sign In</h1>
+            <img src="images/login-logo.png" alt=""/>
+        </div>
+        <div class="login-wrap">
+            <input type="text" class="form-control" placeholder="User ID" id="username" autofocus>
+            <input type="password" class="form-control" placeholder="Password" id="password">
+            <img src="/kaptcha" id="kaptcha" width="110px" height="40px"/>
+            <input type="text" class="form-control" placeholder="captchaCode" id="captchaCode"/>
+            <button class="btn btn-lg btn-login btn-block" type="button" onclick="login()">
+                <i class="fa fa-check"></i>
+            </button>
+            <div class="registration">
+                Not a account yet?
+                <a class="btn" id="sms_login"> sms login </a>
+            </div>
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me" id="rememberMe"> Remember me
+                <span class="pull-right">
+                    <a class="btn" data-toggle="modal" href="#myModal"> Forgot Password?</a>
+                </span>
+            </label>
+        </div>
+    </form>
+
+    <!--smsloginForm-->
+    <form hidden="true" class="form-signin" method="post" id="smsloginForm">
+        <div class="form-signin-heading text-center">
+            <h1 class="sign-title">SMS Sign In</h1>
+            <img src="images/login-logo.png" alt=""/>
+        </div>
+        <div class="login-wrap">
+            <input type="text" class="form-control" placeholder="mobile" id="mobile" autofocus>
+            <input type="text" class="form-control" placeholder="smsCode" id="smsCode">
+
+            <div class="btn-group btn-group-justified">
+                <a href="#" onclick="getSmsCode()" class="btn btn-login btn-lg btn-success btn-block">
+                    <i class="fa fa-mobile"></i>
+                </a>
+                <a href="#" onclick="smsLogin()" class="btn btn-login btn-lg btn-info btn-block">
+                    <i class="fa fa-check"></i>
+                </a>
+            </div>
+
+
+            <!--            <button class="btn btn-lg btn-login btn-block" type="button" onclick="getSmsCode()">-->
+            <!--                <i class="fa fa-check"></i>-->
+            <!--            </button>-->
+
+            <!--            <button class="btn btn-lg btn-login btn-block" type="button" onclick="smslogin()">-->
+            <!--                <i class="fa fa-check"></i>-->
+            <!--            </button>-->
+
+
+            <div class="registration">
+                has account?
+                <a class="btn" id="account_login"> account login </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/modernizr.min.js"></script>
+<script type="text/javascript" src="js/gritter/js/jquery.gritter.js"></script>
+
+
+<script type="text/javascript">
+
+    <!-- 加载验证码-->
+    window.onload = function () {
+        const kaptchaImg = document.getElementById("kaptcha");
+        kaptchaImg.onclick = function () {
+            kaptchaImg.src = "/kaptcha?" + Math.floor(Math.random() * 100)
+        }
+    }
+
+    // 登录
+    function login() {
+        const username = $("#username").val();
+        const password = $("#password").val();
+        const captchaCode = $("#captchaCode").val();
+        const remember = $("#rememberMe").is(":checked");
+
+        if (username === "" || password === "") {
+            box('提示', '用户名或密码不能为空');
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/login",
+            data: {
+                "username": username,
+                "password": password,
+                "captchaCode": captchaCode,
+                "rememberMe": remember
+            },
+            //Ajax响应成功
+            success: function (json) {
+                if (json.isok) {
+                    location.href = '/';//index.html
+                } else {
+                    location.href = '/login.html';//index.html
+                    box(json.code, json.message);
+                }
+            },
+            //Ajax响应失败
+            error: function (json) {
+                errorBox(json.responseText);
+            }
+        })
+    };
+
+    function getSmsCode() {
+        $.ajax({
+            type: "get",
+            url: "/smscode",
+            data: {
+                "mobile": $("#mobile").val()
+            },
+            success: function (json) {
+                if (json.isok) {
+                    box(json.code, json.data);
+                } else {
+                    box(json.code, json.message);
+                }
+            },
+            error: function (json) {
+                console.log(json.responseText);
+                errorBox(json.responseText);
+            }
+        });
+    }
+
+    function smsLogin() {
+        const mobile = $("#mobile").val();
+        const smsCode = $("#smsCode").val();
+        if (mobile === "" || smsCode === "") {
+            box('提示', '手机号和短信验证码均不能为空');
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/smslogin",
+            data: {
+                "mobile": mobile,
+                "smsCode": smsCode
+            },
+            success: function (json) {
+                if (json.isok) {
+                    location.href = "/";
+                } else {
+                    box(json.code, json.message);
+                }
+            },
+            error: function (json) {
+                console.log(json.responseText);
+                errorBox(json.responseText);
+            }
+        });
+    }
+
+    //登录异常弹框
+    function box(code, message) {
+        $.gritter.add({title: code, text: message});
+        return false;
+    };
+
+    function errorBox(message) {
+        $.gritter.add({title: "提示", text: message});
+        return false;
+    };
+
+
+    $("#sms_login").click(function () {
+        $("#smsloginForm").show();
+        $("#loginForm").hide();
+    });
+
+    $("#account_login").click(function () {
+        $("#loginForm").show();
+        $("#smsloginForm").hide();
+    });
+
+</script>
+
+</body>
+</html>
